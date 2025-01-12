@@ -1,4 +1,4 @@
-// client/src/services/socketService.js
+// client/src/socketService.js
 import { io } from 'socket.io-client';
 
 class SocketService {
@@ -10,7 +10,6 @@ class SocketService {
   connect(wsUrl) {
     this.socket = io(wsUrl);
     
-    // Setup basic socket listeners
     this.socket.on('connect', () => {
       console.log('Connected to server');
     });
@@ -21,35 +20,14 @@ class SocketService {
   }
 
   setUsername(username) {
-    return new Promise((resolve, reject) => {
-      this.socket.emit('setUsername', username);
-      
-      this.socket.once('usernameSet', (confirmedUsername) => {
-        this.username = confirmedUsername;
-        resolve(confirmedUsername);
-      });
-      
-      setTimeout(() => reject('Username setup timeout'), 5000);
-    });
-  }
-
-  joinMatchmaking() {
-    this.socket.emit('joinQueue');
-  }
-
-  createLobby() {
-    this.socket.emit('createLobby');
-  }
-
-  joinLobby(lobbyId) {
-    this.socket.emit('joinLobby', lobbyId);
+    this.socket.emit('setUsername', username);
+    this.username = username;
   }
 
   sendGameAction(lobbyId, action) {
     this.socket.emit('gameAction', { lobbyId, action });
   }
 
-  // Event listeners setup
   onGameStart(callback) {
     this.socket.on('gameStart', callback);
   }
