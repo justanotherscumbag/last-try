@@ -1,6 +1,10 @@
 // client/src/socketService.js
 import { io } from 'socket.io-client';
-
+// In socketService.js
+connect() {
+  this.socket = io(window.location.origin);
+  // ... rest of the code
+}
 class SocketService {
   constructor() {
     this.socket = null;
